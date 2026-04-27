@@ -2,10 +2,10 @@
 
 A production-grade, fault-tolerant distributed key-value store written in **C++17** using:
 
-- **Consistent Hashing** — FNV-1a ring with 150 virtual nodes per physical node for even load distribution
-- **Raft Consensus** — Leader election, log replication, and commit across a 5-node cluster
-- **gRPC** — Type-safe RPC layer for both client ↔ node and node ↔ node communication
-- **Docker / Docker Compose** — One-command cluster launch
+- **Consistent Hashing** - FNV-1a ring with 150 virtual nodes per physical node for even load distribution
+- **Raft Consensus** - Leader election, log replication, and commit across a 5-node cluster
+- **gRPC** - Type-safe RPC layer for both client ↔ node and node ↔ node communication
+- **Docker / Docker Compose** - One-command cluster launch
 
 ---
 
