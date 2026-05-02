@@ -1,0 +1,19 @@
+build/
+*.pb.cc
+*.pb.h
+*.grpc.pb.cc
+*.grpc.pb.h
+/tmp/kvstore_*.log
+/tmp/kvstore_pids
+.DS_Store
+.vscode/
+.idea/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Node.js
+node_modules/
+dist/
+.env
