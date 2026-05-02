@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package kvstore;
+
+// ─── KV Store Service ──────────────────────────────────────────────────────────
+service KVStore {
+  rpc Get(GetRequest)       returns (GetResponse);
+  rpc Put(PutRequest)       returns (PutResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc Status(StatusRequest) returns (StatusResponse);
+}
+
+// ─── Raft Consensus Service ────────────────────────────────────────────────────
+service RaftService {
+  rpc RequestVote(VoteRequest)         returns (VoteResponse);
+  rpc AppendEntries(AppendEntriesRequest) returns (AppendEntriesResponse);
+}
+
+// ─── KV Messages ──────────────────────────────────────────────────────────────
+message GetRequest {
+  string key = 1;
+}
+
+message GetResponse {
+  string value = 1;
+  bool   found = 2;
+  string error = 3;
+}
+
+message PutRequest {
+  string key   = 1;
+  string value = 2;
+}
+
+message PutResponse {
+  bool   success = 1;
+  string error   = 2;
+}
+
+message DeleteRequest {
+  string key = 1;
+}
+
+message DeleteResponse {
+  bool   success = 1;
+  string error   = 2;
+}
+
+message StatusRequest {}
+
+message StatusResponse {
+  string node_id   = 1;
+  string role      = 2;   // "leader" | "follower" | "candidate"
+  string leader_id = 3;
+  int64  term      = 4;
+  int32  keys_held = 5;
+}
+
+// ─── Raft Messages ─────────────────────────────────────────────────────────────
+message LogEntry {
+  int64  term    = 1;
+  int64  index   = 2;
+  string command = 3;   // serialised "PUT key value" | "DELETE key"
+}
+
+message VoteRequest {
+  int64  term           = 1;
+  string candidate_id   = 2;
+  int64  last_log_index = 3;
+  int64  last_log_term  = 4;
+}
+
+message VoteResponse {
+  int64 term         = 1;
+  bool  vote_granted = 2;
+}
+
+message AppendEntriesRequest {
+  int64          term           = 1;
+  string         leader_id      = 2;
+  int64          prev_log_index = 3;
+  int64          prev_log_term  = 4;
+  repeated LogEntry entries     = 5;
+  int64          leader_commit  = 6;
+}
+
+message AppendEntriesResponse {
+  int64 term    = 1;
+  bool  success = 2;
+}
