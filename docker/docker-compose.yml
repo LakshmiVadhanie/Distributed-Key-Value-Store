@@ -1,0 +1,87 @@
+version: "3.9"
+
+# ─── 5-node KV-Store cluster ─────────────────────────────────────────────────
+# Each node gets a unique id and knows the addresses of all other nodes.
+# Ports 5005{1..5} are exposed on localhost so you can connect kv_client.
+
+x-peers: &all-peers
+  - node1:50051
+  - node2:50052
+  - node3:50053
+  - node4:50054
+  - node5:50055
+
+services:
+  node1:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: >
+      node1 0.0.0.0:50051
+      node2:node2:50052
+      node3:node3:50053
+      node4:node4:50054
+      node5:node5:50055
+    ports: ["50051:50051"]
+    networks: [kvnet]
+    restart: on-failure
+
+  node2:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: >
+      node2 0.0.0.0:50052
+      node1:node1:50051
+      node3:node3:50053
+      node4:node4:50054
+      node5:node5:50055
+    ports: ["50052:50052"]
+    networks: [kvnet]
+    restart: on-failure
+
+  node3:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: >
+      node3 0.0.0.0:50053
+      node1:node1:50051
+      node2:node2:50052
+      node4:node4:50054
+      node5:node5:50055
+    ports: ["50053:50053"]
+    networks: [kvnet]
+    restart: on-failure
+
+  node4:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: >
+      node4 0.0.0.0:50054
+      node1:node1:50051
+      node2:node2:50052
+      node3:node3:50053
+      node5:node5:50055
+    ports: ["50054:50054"]
+    networks: [kvnet]
+    restart: on-failure
+
+  node5:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: >
+      node5 0.0.0.0:50055
+      node1:node1:50051
+      node2:node2:50052
+      node3:node3:50053
+      node4:node4:50054
+    ports: ["50055:50055"]
+    networks: [kvnet]
+    restart: on-failure
+
+networks:
+  kvnet:
+    driver: bridge
