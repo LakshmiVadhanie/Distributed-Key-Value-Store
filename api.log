@@ -1,0 +1,5 @@
+
+> kvstore-web-api@1.0.0 start
+> node server.js
+
+KVStore API Gateway listening on port 3001
