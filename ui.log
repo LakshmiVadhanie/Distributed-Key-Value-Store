@@ -1,0 +1,9 @@
+
+> web-ui@0.0.0 dev
+> vite --port 5173
+
+
+  VITE v8.0.10  ready in 653 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
